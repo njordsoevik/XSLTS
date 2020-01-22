@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+     <xsl:output omit-xml-declaration="yes"/>
+<xsl:template match="/">
+<xsl:element name="QueueNames">
+	<xsl:for-each select="/ProcessData/ICCERROR">
+		<xsl:variable name="n" select="SOURCE_QUEUE_NAME" />
+		<xsl:variable name="Count" select="count(/ProcessData/ICCERROR/SOURCE_QUEUE_NAME[.=$n])" />
+		<xsl:if test="$Count &gt; 2  and not(preceding-sibling::ICCERROR/SOURCE_QUEUE_NAME=$n)">
+		<xsl:element name="{$n}">
+		<xsl:value-of select="$Count"/>
+		</xsl:element>
+		</xsl:if>
+	</xsl:for-each>
+</xsl:element>
+</xsl:template>
+</xsl:stylesheet>
